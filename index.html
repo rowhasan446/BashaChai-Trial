@@ -1,0 +1,275 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BashaChai.Com - Find Your Perfect Home in Bangladesh</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏠 BashaChai.Com</h1>
+            </div>
+            <div class="nav-menu">
+                <a href="#home">Home</a>
+                <a href="#properties">Properties</a>
+                <a href="#hostels">Hostels</a>
+                <a href="#about">About</a>
+                <button class="btn-login" onclick="openModal('loginModal')">Login</button>
+                <button class="btn-register" onclick="openModal('registerModal')">Register</button>
+                <div class="user-profile" id="userProfile" style="display: none;">
+                    <span id="userName"></span>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Find Your Dream Home in Bangladesh</h2>
+                <p>Discover thousands of rental properties, apartments, and hostels across Bangladesh</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-bar">
+                <select id="areaFilter" onchange="filterProperties()">
+                    <option value="">All Areas</option>
+                    <optgroup label="Dhaka Areas">
+                        <option value="Dhanmondi">Dhanmondi</option>
+                        <option value="Gulshan">Gulshan</option>
+                        <option value="Banani">Banani</option>
+                        <option value="Bashundhara">Bashundhara</option>
+                        <option value="Baridhara">Baridhara</option>
+                        <option value="Uttara">Uttara</option>
+                        <option value="Mohammadpur">Mohammadpur</option>
+                        <option value="Mirpur">Mirpur</option>
+                        <option value="Khilgaon">Khilgaon</option>
+                        <option value="Rampura">Rampura</option>
+                        <option value="Badda">Badda</option>
+                        <option value="Motijheel">Motijheel</option>
+                        <option value="Palashi">Palashi</option>
+                        <option value="Banasree">Banasree</option>
+                        <option value="Eskaton">Eskaton</option>
+                    </optgroup>
+                    <optgroup label="Other Cities">
+                        <option value="Chittagong">Chittagong</option>
+                        <option value="Sylhet">Sylhet</option>
+                        <option value="Rajshahi">Rajshahi</option>
+                        <option value="Khulna">Khulna</option>
+                        <option value="Barisal">Barisal</option>
+                    </optgroup>
+                </select>
+                <select id="budgetFilter" onchange="filterProperties()">
+                    <option value="">All Budgets</option>
+                    <option value="0-5000">৳0 - ৳5,000</option>
+                    <option value="5000-10000">৳5,000 - ৳10,000</option>
+                    <option value="10000-20000">৳10,000 - ৳20,000</option>
+                    <option value="20000-50000">৳20,000 - ৳50,000</option>
+                    <option value="50000-999999">৳50,000+</option>
+                </select>
+                <select id="typeFilter" onchange="filterProperties()">
+                    <option value="">All Types</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Room">Room</option>
+                    <option value="Boys Hostel">Boys Hostel</option>
+                    <option value="Girls Hostel">Girls Hostel</option>
+                </select>
+                <button class="btn-search" onclick="filterProperties()">🔍 Search</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Owner Dashboard -->
+    <section class="owner-dashboard" id="ownerDashboard" style="display: none;">
+        <div class="container">
+            <h3>Owner Dashboard</h3>
+            <button class="btn-primary" onclick="openModal('addPropertyModal')">+ Add New Property</button>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
+    <section class="properties-section" id="properties">
+        <div class="container">
+            <h3>Available Properties</h3>
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Properties will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Hostels Section -->
+    <section class="hostels-section" id="hostels">
+        <div class="container">
+            <h3>Student Hostels</h3>
+            <div class="hostel-tabs">
+                <button class="tab-btn active" onclick="showHostelType('boys')">Boys Hostels</button>
+                <button class="tab-btn" onclick="showHostelType('girls')">Girls Hostels</button>
+            </div>
+            <div class="properties-grid" id="hostelsGrid">
+                <!-- Hostels will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h3>About BashaChai.Com</h3>
+            <p>BashaChai.Com is Bangladesh's premier online platform for finding rental homes, apartments, and student
+                hostels. We connect property owners with tenants, making the rental process simple, transparent, and
+                efficient.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 BashaChai.Com. All rights reserved.</p>
+            <p>Connecting Homes Across Bangladesh</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h3>Login to BashaChai.Com</h3>
+            <form onsubmit="login(event)">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h3>Register on BashaChai.Com</h3>
+            <form onsubmit="register(event)">
+                <input type="text" id="regName" placeholder="Full Name" required>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <input type="tel" id="regPhone" placeholder="Phone Number" required>
+                <input type="password" id="regPassword" placeholder="Password" required>
+                <select id="regRole" required>
+                    <option value="">Select Role</option>
+                    <option value="tenant">Tenant</option>
+                    <option value="owner">Property Owner</option>
+                </select>
+                <button type="submit" class="btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Property Modal -->
+    <div id="addPropertyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addPropertyModal')">&times;</span>
+            <h3>Add New Property</h3>
+            <form onsubmit="addProperty(event)">
+                <input type="text" id="propTitle" placeholder="Property Title" required>
+                <select id="propType" required>
+                    <option value="">Property Type</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Room">Room</option>
+                    <option value="Boys Hostel">Boys Hostel</option>
+                    <option value="Girls Hostel">Girls Hostel</option>
+                </select>
+                <select id="propArea" required>
+                    <option value="">Select Area</option>
+                    <optgroup label="Dhaka Areas">
+                        <option value="Dhanmondi">Dhanmondi</option>
+                        <option value="Gulshan">Gulshan</option>
+                        <option value="Banani">Banani</option>
+                        <option value="Bashundhara">Bashundhara</option>
+                        <option value="Baridhara">Baridhara</option>
+                        <option value="Uttara">Uttara</option>
+                        <option value="Mohammadpur">Mohammadpur</option>
+                        <option value="Mirpur">Mirpur</option>
+                        <option value="Khilgaon">Khilgaon</option>
+                        <option value="Rampura">Rampura</option>
+                        <option value="Badda">Badda</option>
+                        <option value="Motijheel">Motijheel</option>
+                        <option value="Palashi">Palashi</option>
+                        <option value="Banasree">Banasree</option>
+                        <option value="Eskaton">Eskaton</option>
+                    </optgroup>
+                    <optgroup label="Other Cities">
+                        <option value="Chittagong">Chittagong</option>
+                        <option value="Sylhet">Sylhet</option>
+                        <option value="Rajshahi">Rajshahi</option>
+                        <option value="Khulna">Khulna</option>
+                        <option value="Barisal">Barisal</option>
+                    </optgroup>
+                </select>
+                <input type="number" id="propRent" placeholder="Monthly Rent (৳)" required>
+                <input type="text" id="propAddress" placeholder="Full Address" required>
+                <textarea id="propDesc" placeholder="Property Description" rows="3" required></textarea>
+
+                <!-- Image Upload Section -->
+                <div class="image-upload-section" id="imageUploadSection" ondrop="handleDrop(event)"
+                    ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+                    onclick="document.getElementById('propImageInput').click()">
+                    <input type="file" id="propImageInput" accept="image/*" multiple
+                        onchange="handleImageSelect(event)">
+                    <label for="propImageInput" class="upload-label">
+                        <div class="upload-icon">📷</div>
+                        <p><strong>Click or drag images here</strong></p>
+                        <p style="font-size: 0.9rem; color: #7f8c8d;">Upload up to 5 property images</p>
+                    </label>
+                </div>
+                <div class="image-preview-container" id="imagePreviewContainer"></div>
+
+                <input type="text" id="propNearbyHospital" placeholder="Nearby Hospital (e.g., City Hospital - 0.5km)">
+                <input type="text" id="propNearbySchool" placeholder="Nearby School (e.g., ABC School - 1km)">
+                <input type="text" id="propNearbyUniversity"
+                    placeholder="Nearby University (e.g., XYZ University - 2km)">
+                <input type="text" id="propNearbyRestaurant" placeholder="Nearby Restaurant (e.g., Food Plaza - 0.3km)">
+                <button type="submit" class="btn-primary">Add Property</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Property Detail Modal -->
+    <div id="propertyDetailModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal('propertyDetailModal')">&times;</span>
+            <div id="propertyDetailContent">
+                <!-- Property details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('paymentModal')">&times;</span>
+            <h3>Payment Confirmation</h3>
+            <div id="paymentContent">
+                <!-- Payment details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
